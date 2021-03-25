@@ -1,6 +1,7 @@
 package com.dineshworkspace.sensorapp.network
 
 import com.dineshworkspace.sensorapp.AppConstants
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -18,33 +19,43 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+class AppModule {
 
     @[Provides Singleton]
-    fun providesBaseSocket(): Socket {
+    fun providesBaseSocket(okHttpClient: OkHttpClient): Socket {
         val uri = URI.create(AppConstants.BASE_URL)
         val options = IO.Options.builder().build()
+        IO.setDefaultOkHttpCallFactory(okHttpClient)
+        IO.setDefaultOkHttpWebSocketFactory(okHttpClient)
         return IO.socket(uri, options)
     }
 
-    var gson = GsonBuilder()
-        .setLenient()
-        .create()
 
     @[Provides Singleton]
-    fun providesRetrofit(): Retrofit {
+    fun providesGson(): Gson {
+        return GsonBuilder()
+            .setLenient()
+            .create()
+    }
 
+
+    @[Provides Singleton]
+    fun providesOkHttp(): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)
         httpClient.callTimeout(1, TimeUnit.MINUTES)
         httpClient.connectTimeout(1, TimeUnit.MINUTES)
+        return httpClient.build()
+    }
 
+    @[Provides Singleton]
+    fun providesRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(AppConstants.BASE_URL)
-            .client(httpClient.build())
+            .client(okHttpClient)
             .build()
     }
 

@@ -1,4 +1,4 @@
-package com.dineshworkspace.sensorapp
+package com.dineshworkspace.sensorapp.viewModels
 
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
@@ -22,13 +22,13 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
 
     private fun getSensors() = viewModelScope.launch {
         sensorsList.postValue(BaseResponse.loading(null))
-        appRepository.fetchAllSensors().let {
-            if (it.isSuccessful) {
-                sensorsList.postValue(BaseResponse.success(it.body()))
-            } else {
-                sensorsList.postValue(BaseResponse.error(it.errorBody().toString(), null))
-            }
-        }
+//        appRepository.fetchAllSensors().let {
+//            if (it.isSuccessful) {
+//                sensorsList.postValue(BaseResponse.success(it.body()))
+//            } else {
+//                sensorsList.postValue(BaseResponse.error(it.errorBody().toString(), null))
+//            }
+//        }
     }
 
 
