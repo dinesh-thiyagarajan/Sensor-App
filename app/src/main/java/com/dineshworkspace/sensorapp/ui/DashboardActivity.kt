@@ -9,6 +9,7 @@ import com.dineshworkspace.sensorapp.dataModels.Status
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -29,11 +30,20 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         })
 
         baseSocket.emit("subscribe", "temperature0")
-
         baseSocket.on("data") {
-            val json = it[0] as JSONObject
-            val socketResponse = gson.fromJson(json.toString(), SocketResponse::class.java)
-            updateUiForSocketResponse(socketResponse)
+            it.let {
+                if (it.isEmpty()) {
+                    showSnackBar(getString(R.string.data_parsing_err_msg))
+                    return@on
+                }
+                val json = it[0] as JSONObject
+                val socketResponse = gson.fromJson(json.toString(), SocketResponse::class.java)
+                updateUiForSocketResponse(socketResponse)
+            }
+        }
+
+        iv_filter.setOnClickListener {
+            showBottomSheetDialog()
         }
     }
 
@@ -61,6 +71,11 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
 
     private fun showLoadingScreen() {
 
+    }
+
+    fun showBottomSheetDialog() {
+        val filterBottomSheetFragment = FilterBottomSheetFragment()
+        filterBottomSheetFragment.show(supportFragmentManager, "")
     }
 
 }
