@@ -66,7 +66,7 @@ class SensorDiffUtilCallback : DiffUtil.ItemCallback<Sensor>() {
     }
 
     override fun areContentsTheSame(oldItem: Sensor, newItem: Sensor): Boolean {
-        return oldItem.isSelected.equals(newItem.isSelected)
+        return oldItem.subscriptionStatus.equals(newItem.subscriptionStatus)
     }
 }
 
