@@ -12,15 +12,25 @@ import com.dineshworkspace.sensorapp.R
 class FilterOptionsAdapter :
     ListAdapter<String, FilterOptionsAdapter.ViewHolder>(StringDiffUtilCallback()) {
 
+    lateinit var sensorSelectedCallback: SensorSelectedCallback
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_filter, parent, false)
         return ViewHolder(itemView)
     }
 
+    fun setOnSensorSelectedListener(sensorSelectedCallback: SensorSelectedCallback) {
+        this.sensorSelectedCallback = sensorSelectedCallback
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position != -1) {
             holder.tvSensorName.setText(getItem(position))
+
+            holder.itemView.setOnClickListener {
+                sensorSelectedCallback.onSensorSelected(getItem(position))
+            }
         }
     }
 
@@ -37,5 +47,8 @@ class StringDiffUtilCallback : DiffUtil.ItemCallback<String>() {
     override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
         return oldItem == newItem
     }
+}
 
+interface SensorSelectedCallback {
+    fun onSensorSelected(sensor: String)
 }

@@ -15,6 +15,7 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
     LifecycleObserver {
 
     var sensorsList: MutableLiveData<BaseResponse<ArrayList<String>>> = MutableLiveData()
+    var selectedSensor: MutableLiveData<String> = MutableLiveData()
 
     init {
         getSensors()
@@ -29,6 +30,10 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
                 sensorsList.postValue(BaseResponse.error(it.errorBody().toString(), null))
             }
         }
+    }
+
+    protected fun listenToSensorData(sensorName: String) {
+
     }
 
 

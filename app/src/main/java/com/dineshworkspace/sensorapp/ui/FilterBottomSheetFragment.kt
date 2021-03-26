@@ -12,7 +12,7 @@ import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.layout_filter_bottom_sheet.*
 
-class FilterBottomSheetFragment : BottomSheetDialogFragment() {
+class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCallback {
 
     private val sensorViewModel: SensorViewModel by activityViewModels()
     lateinit var filterOptionsAdapter: FilterOptionsAdapter
@@ -43,9 +43,14 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
         rv_filter_options.setLayoutManager(mLayoutManager)
         rv_filter_options.setItemAnimator(DefaultItemAnimator())
         rv_filter_options.setAdapter(filterOptionsAdapter)
+        filterOptionsAdapter.setOnSensorSelectedListener(this)
     }
 
     override fun getTheme(): Int {
         return R.style.AppBottomSheetDialogTheme
+    }
+
+    override fun onSensorSelected(sensor: String) {
+        sensorViewModel.selectedSensor.postValue(sensor)
     }
 }
