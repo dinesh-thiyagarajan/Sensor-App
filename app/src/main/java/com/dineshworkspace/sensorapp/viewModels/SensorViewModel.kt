@@ -123,4 +123,13 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
         return lineDataSet
     }
 
+    fun onSocketUnsubscribed(sensorName: String) {
+        viewModelScope.launch {
+            rawHashEntries.let {
+                it.remove(sensorName)
+            }
+            convertHashToLineDataSet()
+        }
+    }
+
 }

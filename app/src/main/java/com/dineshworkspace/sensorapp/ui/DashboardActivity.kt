@@ -22,7 +22,6 @@ import javax.inject.Inject
 class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
 
     private val sensorViewModel: SensorViewModel by viewModels()
-    private val linkedChartHashMap: LinkedHashMap<String, ArrayList<Entry>> = LinkedHashMap()
 
     @Inject
     lateinit var gson: Gson
@@ -87,6 +86,7 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     private fun unsubscribeSensor(sensor: Sensor) {
         baseSocket.emit("unsubscribe", sensor.sensorName)
         sensor.subscriptionStatus = SubscriptionStatus.UN_SUBSCRIBED
+        sensorViewModel.onSocketUnsubscribed(sensorName = sensor.sensorName)
     }
 
     private fun subscribeSensor(sensor: Sensor) {
