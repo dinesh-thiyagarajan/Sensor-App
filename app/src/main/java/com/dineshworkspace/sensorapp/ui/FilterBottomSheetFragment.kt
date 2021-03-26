@@ -91,6 +91,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
         if (selectedSensors == null) {
             selectedSensors = ArrayList()
         }
+        selectedSensors.add(sensor)
         sensorViewModel.selectedSensors.postValue(selectedSensors)
     }
 }

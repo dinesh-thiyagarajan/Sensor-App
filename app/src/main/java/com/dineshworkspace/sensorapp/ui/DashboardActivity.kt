@@ -3,10 +3,9 @@ package com.dineshworkspace.sensorapp.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.dineshworkspace.sensorapp.R
-import com.dineshworkspace.sensorapp.dataModels.BaseResponse
 import com.dineshworkspace.sensorapp.dataModels.Sensor
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
-import com.dineshworkspace.sensorapp.dataModels.Status
+import com.dineshworkspace.sensorapp.dataModels.SubscriptionStatus
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -29,22 +28,45 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        baseSocket.emit("subscribe", "temperature0")
-        baseSocket.on("data") {
-            it.let {
-                if (it.isEmpty()) {
-                    showSnackBar(getString(R.string.data_parsing_err_msg))
-                    return@on
+        sensorViewModel.selectedSensors.observe(this, { it ->
+            it.let { sensorList ->
+                sensorList.forEach {
+                    when (it.subscriptionStatus) {
+                        SubscriptionStatus.TO_BE_SUBSCRIBED -> subscribeSensor(it)
+                        SubscriptionStatus.UN_SUBSCRIBED -> unsubscribeSensor(it)
+                    }
                 }
-                val json = it[0] as JSONObject
-                val socketResponse = gson.fromJson(json.toString(), SocketResponse::class.java)
-                updateUiForSocketResponse(socketResponse)
             }
+        })
+
+        baseSocket.on("data") {
+            parseSensorResponse(it)
         }
 
         iv_filter.setOnClickListener {
+            iv_filter.isEnabled = false
             showBottomSheetDialog()
+        }
+    }
+
+    private fun unsubscribeSensor(sensor: Sensor) {
+        baseSocket.emit("unsubscribe", sensor.sensorName)
+        sensor.subscriptionStatus = SubscriptionStatus.UN_SUBSCRIBED
+    }
+
+    private fun subscribeSensor(sensor: Sensor) {
+        baseSocket.emit("subscribe", sensor.sensorName)
+        sensor.subscriptionStatus = SubscriptionStatus.SUBSCRIBED
+    }
+
+    private fun parseSensorResponse(it: Array<Any>?) {
+        it.let { result ->
+            result?.get(0).let {
+                val jsonObject = it as JSONObject
+                val socketResponse =
+                    gson.fromJson(jsonObject.toString(), SocketResponse::class.java)
+                updateUiForSocketResponse(socketResponse)
+            }
         }
     }
 
@@ -67,20 +89,10 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         chart_sensor_data.invalidate()
     }
 
-
-
-    private fun showErrorScreen(message: String?) {
-        showSnackBar(message)
-    }
-
-
-    private fun showLoadingScreen() {
-
-    }
-
     fun showBottomSheetDialog() {
         val filterBottomSheetFragment = FilterBottomSheetFragment()
         filterBottomSheetFragment.show(supportFragmentManager, "")
+        iv_filter.isEnabled = true
     }
 
 }

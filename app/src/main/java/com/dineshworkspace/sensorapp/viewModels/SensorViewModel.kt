@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dineshworkspace.sensorapp.dataModels.BaseResponse
 import com.dineshworkspace.sensorapp.dataModels.Sensor
+import com.dineshworkspace.sensorapp.dataModels.SubscriptionStatus
 import com.dineshworkspace.sensorapp.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -34,13 +35,18 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
         }
     }
 
-
     private fun parseSensorData(sensors: Response<ArrayList<String>>): ArrayList<Sensor> {
         val sensorList = ArrayList<Sensor>()
         sensors.let {
-            it.body().let {
-                for (sensor in it!!) {
-                    sensorList.add(Sensor(sensor, false))
+            it.body().let { data ->
+                for (sensor in data!!) {
+                    sensorList.add(
+                        Sensor(
+                            sensor,
+                            isSelected = false,
+                            subscriptionStatus = SubscriptionStatus.NOT_YET
+                        )
+                    )
                 }
             }
         }

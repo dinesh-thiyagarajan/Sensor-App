@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dineshworkspace.sensorapp.R
 import com.dineshworkspace.sensorapp.dataModels.Sensor
+import com.dineshworkspace.sensorapp.dataModels.SubscriptionStatus
 
 class FilterOptionsAdapter :
     ListAdapter<Sensor, FilterOptionsAdapter.ViewHolder>(SensorDiffUtilCallback()) {
@@ -30,17 +31,27 @@ class FilterOptionsAdapter :
         if (position != -1) {
             val sensorItem = getItem(position)
             holder.itemView.setOnClickListener {
-                sensorItem.isSelected = !sensorItem.isSelected
+                when (sensorItem.subscriptionStatus) {
+                    SubscriptionStatus.NOT_YET -> sensorItem.subscriptionStatus =
+                        SubscriptionStatus.TO_BE_SUBSCRIBED
+                    SubscriptionStatus.SUBSCRIBED -> sensorItem.subscriptionStatus =
+                        SubscriptionStatus.UN_SUBSCRIBED
+                    SubscriptionStatus.UN_SUBSCRIBED -> sensorItem.subscriptionStatus =
+                        SubscriptionStatus.SUBSCRIBED
+                }
+                updateUi(holder, sensorItem)
                 sensorSelectedCallback.onSensorSelected(sensorItem)
-                holder.ivSensorSelection.visibility =
-                    if (sensorItem.isSelected) View.VISIBLE else View.GONE
             }
-
             holder.tvSensorName.text = sensorItem.sensorName
-            holder.ivSensorSelection.visibility =
-                if (sensorItem.isSelected) View.VISIBLE else View.GONE
-
+            updateUi(holder, sensorItem)
         }
+    }
+
+    private fun updateUi(holder: ViewHolder, sensorItem: Sensor) {
+        holder.ivSensorSelection.visibility =
+            if (sensorItem.subscriptionStatus == SubscriptionStatus.SUBSCRIBED
+                || sensorItem.subscriptionStatus == SubscriptionStatus.TO_BE_SUBSCRIBED
+            ) View.VISIBLE else View.GONE
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
