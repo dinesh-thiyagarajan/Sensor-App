@@ -7,4 +7,6 @@ class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
 
     suspend fun fetchAllSensors() = apiHelper.getSensors()
 
+    suspend fun fetchSensorConfig() = apiHelper.getSensorConfig()
+
 }

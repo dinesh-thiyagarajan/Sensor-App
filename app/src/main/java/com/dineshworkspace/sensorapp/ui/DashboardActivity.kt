@@ -120,7 +120,7 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         }
     }
 
-    fun showBottomSheetDialog() {
+    private fun showBottomSheetDialog() {
         val filterBottomSheetFragment = FilterBottomSheetFragment()
         filterBottomSheetFragment.show(supportFragmentManager, "")
         iv_filter.isClickable = true
