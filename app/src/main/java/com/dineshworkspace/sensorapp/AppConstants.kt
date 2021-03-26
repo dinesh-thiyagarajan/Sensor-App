@@ -12,4 +12,8 @@ object AppConstants {
     const val RES_TYPE_INIT = "init"
     const val RES_TYPE_UPDATE = "update"
     const val RES_TYPE_DELETE = "delete"
+
+    //Socket Data Variant
+    const val DATA_VARIANT_RECENT = "recent"
+    const val DATA_VARIANT_MINUTE = "minute"
 }

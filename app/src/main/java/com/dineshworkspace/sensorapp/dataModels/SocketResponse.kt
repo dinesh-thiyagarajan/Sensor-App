@@ -6,7 +6,7 @@ data class SocketResponse(
     val type: String,
     val recent: ArrayList<Recent>,
     val minute: ArrayList<Minute>,
-    val key: String,
+    val key: Double,
     @SerializedName("val") val value: Double,
     val sensor: String,
     val scale: String,

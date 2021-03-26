@@ -1,6 +1,5 @@
 package com.dineshworkspace.sensorapp.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.dineshworkspace.sensorapp.AppConstants
@@ -12,14 +11,11 @@ import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import org.json.JSONObject
 import javax.inject.Inject
-import kotlin.random.Random
 
 
 @AndroidEntryPoint
@@ -52,16 +48,8 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
 
         initChartCustomizations()
 
-        sensorViewModel.chartDataHash.observe(this, {
-            linkedChartHashMap.put(lastSubscribedSensor, it.get(lastSubscribedSensor)!!)
-
-            val dataSets = java.util.ArrayList<ILineDataSet>()
-
-            linkedChartHashMap.forEach { (key, value) ->
-                val lineDataSet = generateLineDataSet(key, value)
-                dataSets.add(lineDataSet)
-            }
-            val lineData = LineData(dataSets)
+        sensorViewModel.dataSetList.observe(this, {
+            val lineData = LineData(it)
             chart_sensor_data.data = lineData
             chart_sensor_data.invalidate()
         })
@@ -72,14 +60,6 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         }
     }
 
-    private fun generateLineDataSet(key: String, value: java.util.ArrayList<Entry>): LineDataSet {
-        val lineDataSet = LineDataSet(value, key)
-        val rnd = Random.Default
-        val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-        lineDataSet.color = color
-        lineDataSet.valueTextColor = color
-        return lineDataSet
-    }
 
     private fun initChartCustomizations() {
         chart_sensor_data.setDrawGridBackground(false)
