@@ -37,7 +37,7 @@ class FilterOptionsAdapter :
                     SubscriptionStatus.SUBSCRIBED -> sensorItem.subscriptionStatus =
                         SubscriptionStatus.UN_SUBSCRIBED
                     SubscriptionStatus.UN_SUBSCRIBED -> sensorItem.subscriptionStatus =
-                        SubscriptionStatus.SUBSCRIBED
+                        SubscriptionStatus.TO_BE_SUBSCRIBED
                 }
                 updateUi(holder, sensorItem)
                 sensorSelectedCallback.onSensorSelected(sensorItem)

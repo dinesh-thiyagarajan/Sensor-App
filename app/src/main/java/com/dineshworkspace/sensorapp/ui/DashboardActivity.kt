@@ -2,14 +2,12 @@ package com.dineshworkspace.sensorapp.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.dineshworkspace.sensorapp.AppConstants
 import com.dineshworkspace.sensorapp.R
 import com.dineshworkspace.sensorapp.dataModels.Sensor
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
 import com.dineshworkspace.sensorapp.dataModels.SubscriptionStatus
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -44,7 +42,7 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         }
 
         iv_filter.setOnClickListener {
-            iv_filter.isEnabled = false
+            iv_filter.isClickable = false
             showBottomSheetDialog()
         }
     }
@@ -71,28 +69,32 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     }
 
     private fun updateUiForSocketResponse(socketResponse: SocketResponse?) {
-        var entries = ArrayList<Entry>()
-        socketResponse.let {
-            it!!.recent.let { recent ->
-                if (recent == null) return@let
-                for (item in recent) {
-                    entries.add(Entry(item.key.toFloat(), item.value.toFloat()))
-                }
-
+        socketResponse.let { response ->
+            when (response?.type) {
+                AppConstants.RES_TYPE_INIT -> onInitDataReceived(response)
+                AppConstants.RES_TYPE_UPDATE -> onUpdateDataReceived(response)
+                AppConstants.RES_TYPE_DELETE -> onDeleteDataReceived(response)
+                else -> showSnackBarWithAutoClosure(getString(R.string.something_went_wrong))
             }
         }
-        if (entries.isEmpty()) return
-        val dataSet = LineDataSet(entries, "Label")
-        dataSet.setColor(resources.getColor(R.color.black))
-        val lineData = LineData(dataSet)
-        chart_sensor_data.setData(lineData)
-        chart_sensor_data.invalidate()
+    }
+
+    private fun onDeleteDataReceived(response: SocketResponse) {
+
+    }
+
+    private fun onUpdateDataReceived(response: SocketResponse) {
+
+    }
+
+    private fun onInitDataReceived(response: SocketResponse) {
+
     }
 
     fun showBottomSheetDialog() {
         val filterBottomSheetFragment = FilterBottomSheetFragment()
         filterBottomSheetFragment.show(supportFragmentManager, "")
-        iv_filter.isEnabled = true
+        iv_filter.isClickable = true
     }
 
 }
