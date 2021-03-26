@@ -7,6 +7,9 @@ import com.dineshworkspace.sensorapp.dataModels.BaseResponse
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
 import com.dineshworkspace.sensorapp.dataModels.Status
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -48,7 +51,22 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     }
 
     private fun updateUiForSocketResponse(socketResponse: SocketResponse?) {
+        var entries = ArrayList<Entry>()
+        socketResponse.let {
+            it!!.recent.let { recent ->
+                if (recent == null) return@let
+                for (item in recent) {
+                    entries.add(Entry(item.key.toFloat(), item.value.toFloat()))
+                }
 
+            }
+        }
+        if (entries.isEmpty()) return
+        val dataSet = LineDataSet(entries, "Label")
+        dataSet.setColor(resources.getColor(R.color.black))
+        val lineData = LineData(dataSet)
+        chart_sensor_data.setData(lineData)
+        chart_sensor_data.invalidate()
     }
 
 
