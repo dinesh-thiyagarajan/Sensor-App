@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.dineshworkspace.sensorapp.R
 import com.dineshworkspace.sensorapp.dataModels.BaseResponse
+import com.dineshworkspace.sensorapp.dataModels.Sensor
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
 import com.dineshworkspace.sensorapp.dataModels.Status
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
@@ -28,9 +29,6 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sensorViewModel.sensorsList.observe(this, {
-            updateUiForSensorListResponse(it)
-        })
 
         baseSocket.emit("subscribe", "temperature0")
         baseSocket.on("data") {
@@ -70,17 +68,6 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     }
 
 
-    private fun updateUiForSensorListResponse(baseResponse: BaseResponse<ArrayList<String>>) {
-        when (baseResponse.status) {
-            Status.LOADING -> showLoadingScreen()
-            Status.ERROR -> showErrorScreen(baseResponse.message)
-            Status.SUCCESS -> showSensorFiltersInUi(baseResponse.data)
-        }
-    }
-
-    private fun showSensorFiltersInUi(data: java.util.ArrayList<String>?) {
-
-    }
 
     private fun showErrorScreen(message: String?) {
         showSnackBar(message)

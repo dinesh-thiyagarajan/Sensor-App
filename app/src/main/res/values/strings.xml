@@ -4,4 +4,5 @@
     <string name="socket_success_msg">Socket Connection has been successfully established</string>
     <string name="socket_failed_msg">Socket Connection Failed!</string>
     <string name="data_parsing_err_msg">Error Parsing socket data!</string>
+    <string name="something_went_wrong">Something went wrong Please try again later !!</string>
 </resources>

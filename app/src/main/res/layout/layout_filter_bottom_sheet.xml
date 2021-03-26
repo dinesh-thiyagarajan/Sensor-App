@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="50dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_filter_options"
@@ -12,8 +22,51 @@
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_filter"
+        app:layout_constraintTop_toBottomOf="@id/iv_close"
         tools:itemCount="10"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:listitem="@layout/item_filter" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+            <include layout="@layout/placeholder_loading" />
+
+        </LinearLayout>
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <include
+        layout="@layout/layout_error"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

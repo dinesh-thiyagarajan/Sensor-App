@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="30dp">
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp">
 
     <TextView
         android:id="@+id/tv_sensor_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:maxLines="1"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,11 +20,20 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/lorem" />
 
+    <ImageView
+        android:id="@+id/iv_sensor_selection"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:padding="6dp"
+        android:src="@drawable/ic_blue_check"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/bottom_line"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginEnd="30dp"
         android:background="@color/lighter_gray"
         app:layout_constraintTop_toBottomOf="@id/tv_sensor_name" />
 

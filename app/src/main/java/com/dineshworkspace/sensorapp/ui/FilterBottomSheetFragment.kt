@@ -8,8 +8,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dineshworkspace.sensorapp.R
+import com.dineshworkspace.sensorapp.dataModels.BaseResponse
+import com.dineshworkspace.sensorapp.dataModels.Sensor
+import com.dineshworkspace.sensorapp.dataModels.Status
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.layout_error.*
 import kotlinx.android.synthetic.main.layout_filter_bottom_sheet.*
 
 class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCallback {
@@ -31,10 +35,42 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
 
         initAdapter()
         sensorViewModel.sensorsList.observe(viewLifecycleOwner, {
-            it.let {
-                filterOptionsAdapter.submitList(it.data)
-            }
+            parseSensorData(it)
         })
+
+        iv_close.setOnClickListener {
+            dismiss()
+        }
+    }
+
+    private fun parseSensorData(baseResponse: BaseResponse<java.util.ArrayList<Sensor>>) {
+        when (baseResponse.status) {
+            Status.LOADING -> showLoadingScreen()
+            Status.ERROR -> showErrorScreen(baseResponse.message)
+            Status.SUCCESS -> showSensorFiltersInUi(baseResponse.data)
+        }
+    }
+
+    private fun showSensorFiltersInUi(data: java.util.ArrayList<Sensor>?) {
+        shimmer_container.visibility = View.GONE
+        shimmer_container.stopShimmer()
+        rv_filter_options.visibility = View.VISIBLE
+        filterOptionsAdapter.submitList(data)
+    }
+
+    private fun showErrorScreen(message: String?) {
+        cl_error_layout.visibility = View.VISIBLE
+        tv_err_msg.text = message
+        shimmer_container.visibility = View.GONE
+        shimmer_container.stopShimmer()
+        rv_filter_options.visibility = View.GONE
+    }
+
+    private fun showLoadingScreen() {
+        shimmer_container.visibility = View.VISIBLE
+        shimmer_container.startShimmer()
+        rv_filter_options.visibility = View.GONE
+        cl_error_layout.visibility = View.GONE
     }
 
     private fun initAdapter() {
@@ -50,7 +86,11 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
         return R.style.AppBottomSheetDialogTheme
     }
 
-    override fun onSensorSelected(sensor: String) {
-        sensorViewModel.selectedSensor.postValue(sensor)
+    override fun onSensorSelected(sensor: Sensor) {
+        var selectedSensors = sensorViewModel.selectedSensors.value
+        if (selectedSensors == null) {
+            selectedSensors = ArrayList()
+        }
+        sensorViewModel.selectedSensors.postValue(selectedSensors)
     }
 }
