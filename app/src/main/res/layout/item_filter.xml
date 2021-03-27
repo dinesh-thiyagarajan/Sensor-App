@@ -15,10 +15,11 @@
         android:maxLines="1"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toStartOf="@id/tv_min_max_values"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@tools:sample/lorem" />
+        tools:text="@tools:sample/lorem/random" />
 
     <TextView
         android:id="@+id/tv_min_max_values"
