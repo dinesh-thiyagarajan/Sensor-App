@@ -42,6 +42,19 @@ class FilterOptionsAdapter :
                 updateUi(holder, sensorItem)
                 sensorSelectedCallback.onSensorSelected(sensorItem)
             }
+
+            if (sensorItem.hasConfigFetched) {
+                holder.tvMinMax.visibility = View.VISIBLE
+                holder.tvMinMax.setText(
+                    holder.itemView.context.getString(
+                        R.string.sensor_min_max,
+                        sensorItem.min.toString(), sensorItem.max.toString()
+                    )
+                )
+            } else {
+                holder.tvMinMax.visibility = View.GONE
+            }
+
             holder.tvSensorName.text = sensorItem.sensorName
             updateUi(holder, sensorItem)
         }
@@ -56,6 +69,7 @@ class FilterOptionsAdapter :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvSensorName: TextView = itemView.findViewById(R.id.tv_sensor_name)
+        var tvMinMax: TextView = itemView.findViewById(R.id.tv_min_max_values)
         var ivSensorSelection: ImageView = itemView.findViewById(R.id.iv_sensor_selection)
     }
 }

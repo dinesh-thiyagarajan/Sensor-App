@@ -2,7 +2,10 @@ package com.dineshworkspace.sensorapp.dataModels
 
 data class Sensor(
     val sensorName: String,
-    var subscriptionStatus: SubscriptionStatus
+    var subscriptionStatus: SubscriptionStatus,
+    var min: Int,
+    var max: Int,
+    var hasConfigFetched: Boolean
 )
 
 enum class SubscriptionStatus {
