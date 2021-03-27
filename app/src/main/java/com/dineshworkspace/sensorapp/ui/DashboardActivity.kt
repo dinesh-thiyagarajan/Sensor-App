@@ -126,4 +126,7 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         iv_filter.isClickable = true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

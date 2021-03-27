@@ -104,7 +104,7 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
                     recentData.putAll(sensorData.get(AppConstants.DATA_VARIANT_MINUTE) as LinkedHashMap<Double, Double>)
                     val entrySets = ArrayList<Entry>()
                     recentData.forEach { (doubleKey, doubleValue) ->
-                        entrySets.add(Entry(doubleKey.toFloat(), doubleKey.toFloat()))
+                        entrySets.add(Entry(doubleKey.toFloat(), doubleValue.toFloat()))
                     }
                     val lineData = generateLineDataSet(key = sensorKey, value = entrySets)
                     lineDataList.add(lineData)
