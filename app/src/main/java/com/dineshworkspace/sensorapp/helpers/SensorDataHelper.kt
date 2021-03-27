@@ -1,7 +1,9 @@
 package com.dineshworkspace.sensorapp.helpers
 
+import android.graphics.Color
 import com.dineshworkspace.sensorapp.AppConstants
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
+import kotlin.random.Random
 
 object SensorDataHelper {
 
@@ -48,6 +50,12 @@ object SensorDataHelper {
                 ?.remove(response.key)
         }
         return rawHashEntries
+    }
+
+    fun generateRandomColor(): Int {
+        val rnd = Random.Default
+        val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+        return color
     }
 
 }

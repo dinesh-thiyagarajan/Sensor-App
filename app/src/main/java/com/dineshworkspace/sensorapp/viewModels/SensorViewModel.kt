@@ -1,6 +1,5 @@
 package com.dineshworkspace.sensorapp.viewModels
 
-import android.graphics.Color
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class SensorViewModel @Inject constructor(private val appRepository: AppRepository) : ViewModel(),
@@ -30,6 +28,7 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
     var rawHashEntries: LinkedHashMap<String, HashMap<String, LinkedHashMap<Double, Double>>> =
         LinkedHashMap()
     var dataSetList: MutableLiveData<ArrayList<ILineDataSet>> = MutableLiveData()
+    var sensorColorHash: HashMap<String, Int> = HashMap()
 
     init {
         getSensors()
@@ -99,6 +98,13 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
             it.forEach { (sensorKey, value) ->
                 value.let { sensorData ->
                     //For each sensor loop ex: temperature0,temperature1, etc
+                    val colorCode: Int
+                    if (sensorColorHash.containsKey(sensorKey)) {
+                        colorCode = sensorColorHash.get(sensorKey)!!
+                    } else {
+                        colorCode = SensorDataHelper.generateRandomColor()
+                        sensorColorHash.put(sensorKey, colorCode)
+                    }
                     val recentData =
                         sensorData.get(AppConstants.DATA_VARIANT_RECENT) as LinkedHashMap<Double, Double>
                     recentData.putAll(sensorData.get(AppConstants.DATA_VARIANT_MINUTE) as LinkedHashMap<Double, Double>)
@@ -106,7 +112,10 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
                     recentData.forEach { (doubleKey, doubleValue) ->
                         entrySets.add(Entry(doubleKey.toFloat(), doubleValue.toFloat()))
                     }
-                    val lineData = generateLineDataSet(key = sensorKey, value = entrySets)
+                    val lineData = generateLineDataSet(
+                        key = sensorKey, value = entrySets,
+                        color = colorCode
+                    )
                     lineDataList.add(lineData)
                 }
             }
@@ -114,10 +123,12 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
         dataSetList.postValue(lineDataList)
     }
 
-    private fun generateLineDataSet(key: String, value: java.util.ArrayList<Entry>): LineDataSet {
+    private fun generateLineDataSet(
+        key: String,
+        value: java.util.ArrayList<Entry>,
+        color: Int
+    ): LineDataSet {
         val lineDataSet = LineDataSet(value, key)
-        val rnd = Random.Default
-        val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
         lineDataSet.color = color
         lineDataSet.valueTextColor = color
         return lineDataSet
