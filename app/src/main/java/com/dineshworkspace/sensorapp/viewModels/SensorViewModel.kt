@@ -14,6 +14,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.gson.JsonObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -35,26 +37,35 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
     }
 
     private fun getSensors() = viewModelScope.launch {
-        sensorsList.postValue(BaseResponse.loading(null))
-        appRepository.fetchAllSensors().let {
-            if (it.isSuccessful) {
+        appRepository.fetchAllSensors().enqueue(object : Callback<ArrayList<String>?> {
+            override fun onResponse(
+                call: Call<ArrayList<String>?>,
+                response: Response<ArrayList<String>?>
+            ) {
                 getSensorsConfig()
-                sensorsList.postValue(BaseResponse.success(parseSensorListData(it)))
-            } else {
-                sensorsList.postValue(BaseResponse.error(it.errorBody().toString(), null))
+                sensorsList.postValue(BaseResponse.success(parseSensorListData(response)))
             }
-        }
+
+            override fun onFailure(call: Call<ArrayList<String>?>, t: Throwable) {
+                sensorsList.postValue(BaseResponse.error(t.localizedMessage, null))
+            }
+
+        })
     }
 
     private fun getSensorsConfig() = viewModelScope.launch {
-        appRepository.fetchSensorConfig().let {
-            if (it.isSuccessful) {
-                parseAndUpdateSensorConfig(it)
+        appRepository.fetchSensorConfig().enqueue(object : Callback<JsonObject?> {
+            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
+                parseAndUpdateSensorConfig(response)
             }
-        }
+
+            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+
+            }
+        })
     }
 
-    private fun parseAndUpdateSensorConfig(jsonResponse: Response<JsonObject>) {
+    private fun parseAndUpdateSensorConfig(jsonResponse: Response<JsonObject?>) {
         jsonResponse.let {
             it.body().let { body ->
                 for (sensor in sensorList) {
@@ -68,7 +79,7 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
         sensorsList.postValue(BaseResponse.success(sensorList))
     }
 
-    private fun parseSensorListData(sensors: Response<ArrayList<String>>): ArrayList<Sensor> {
+    private fun parseSensorListData(sensors: Response<ArrayList<String>?>): ArrayList<Sensor> {
         sensors.let {
             it.body().let { data ->
                 for (sensor in data!!) {
