@@ -1,6 +1,6 @@
 package com.dineshworkspace.sensorapp.network
 
-import com.dineshworkspace.sensorapp.AppConstants
+import com.dineshworkspace.sensorapp.helpers.AppConstants
 import com.dineshworkspace.sensorapp.helpers.DoubleTypeAdapter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

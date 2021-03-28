@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import com.dineshworkspace.sensorapp.AppConstants
+import com.dineshworkspace.sensorapp.helpers.AppConstants
 import com.dineshworkspace.sensorapp.R
 import com.dineshworkspace.sensorapp.helpers.UiHelper
 import io.socket.client.Socket

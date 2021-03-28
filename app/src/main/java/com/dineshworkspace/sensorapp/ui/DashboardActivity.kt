@@ -2,14 +2,13 @@ package com.dineshworkspace.sensorapp.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.dineshworkspace.sensorapp.AppConstants
+import com.dineshworkspace.sensorapp.helpers.AppConstants
 import com.dineshworkspace.sensorapp.R
 import com.dineshworkspace.sensorapp.dataModels.Sensor
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
 import com.dineshworkspace.sensorapp.dataModels.SubscriptionStatus
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint

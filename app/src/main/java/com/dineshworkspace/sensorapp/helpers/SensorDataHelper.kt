@@ -1,7 +1,6 @@
 package com.dineshworkspace.sensorapp.helpers
 
 import android.graphics.Color
-import com.dineshworkspace.sensorapp.AppConstants
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
 import kotlin.random.Random
 

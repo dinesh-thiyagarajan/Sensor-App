@@ -1,8 +1,7 @@
 package com.dineshworkspace.sensorapp.network
 
-import com.dineshworkspace.sensorapp.AppConstants
+import com.dineshworkspace.sensorapp.helpers.AppConstants
 import com.google.gson.JsonObject
-import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.GET
 

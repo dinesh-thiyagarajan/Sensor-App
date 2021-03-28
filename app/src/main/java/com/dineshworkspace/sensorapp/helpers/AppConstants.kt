@@ -1,4 +1,4 @@
-package com.dineshworkspace.sensorapp
+package com.dineshworkspace.sensorapp.helpers
 
 object AppConstants {
 

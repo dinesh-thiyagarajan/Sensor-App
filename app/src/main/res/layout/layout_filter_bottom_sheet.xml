@@ -67,12 +67,11 @@
         android:id="@+id/rv_filter_options"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_close"
-        tools:itemCount="10"
+        app:layout_constraintTop_toBottomOf="@id/rg_toggle"
+        tools:itemCount="20"
         tools:listitem="@layout/item_filter" />
 
     <com.facebook.shimmer.ShimmerFrameLayout

@@ -4,8 +4,8 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dineshworkspace.sensorapp.AppConstants
 import com.dineshworkspace.sensorapp.dataModels.*
+import com.dineshworkspace.sensorapp.helpers.AppConstants
 import com.dineshworkspace.sensorapp.helpers.SensorDataHelper
 import com.dineshworkspace.sensorapp.repository.AppRepository
 import com.github.mikephil.charting.data.Entry
