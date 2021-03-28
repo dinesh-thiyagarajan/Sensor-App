@@ -37,6 +37,7 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
     }
 
     private fun getSensors() = viewModelScope.launch {
+        sensorsList.postValue(BaseResponse.loading(null))
         appRepository.fetchAllSensors().enqueue(object : Callback<ArrayList<String>?> {
             override fun onResponse(
                 call: Call<ArrayList<String>?>,
