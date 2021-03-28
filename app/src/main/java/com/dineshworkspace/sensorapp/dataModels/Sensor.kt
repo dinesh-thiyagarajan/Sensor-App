@@ -14,3 +14,9 @@ enum class SubscriptionStatus {
     SUBSCRIBED,
     UN_SUBSCRIBED
 }
+
+enum class SelectedConfig {
+    ALL,
+    MINUTE,
+    RECENT
+}

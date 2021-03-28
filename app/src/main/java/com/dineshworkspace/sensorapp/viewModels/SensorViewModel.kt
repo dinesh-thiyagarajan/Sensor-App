@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dineshworkspace.sensorapp.AppConstants
-import com.dineshworkspace.sensorapp.dataModels.BaseResponse
-import com.dineshworkspace.sensorapp.dataModels.Sensor
-import com.dineshworkspace.sensorapp.dataModels.SocketResponse
-import com.dineshworkspace.sensorapp.dataModels.SubscriptionStatus
+import com.dineshworkspace.sensorapp.dataModels.*
 import com.dineshworkspace.sensorapp.helpers.SensorDataHelper
 import com.dineshworkspace.sensorapp.repository.AppRepository
 import com.github.mikephil.charting.data.Entry
@@ -30,7 +27,8 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
         LinkedHashMap()
     var dataSetList: MutableLiveData<ArrayList<ILineDataSet>> = MutableLiveData()
     var sensorColorHash: HashMap<String, Int> = HashMap()
-    val sensorList = ArrayList<Sensor>()
+    private val sensorList = ArrayList<Sensor>()
+    var selectedConfig: SelectedConfig = SelectedConfig.ALL
 
     init {
         getSensors()
@@ -132,11 +130,29 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
                         colorCode = SensorDataHelper.generateRandomColor()
                         sensorColorHash.put(sensorKey, colorCode)
                     }
-                    val recentData =
-                        sensorData.get(AppConstants.DATA_VARIANT_RECENT) as LinkedHashMap<Double, Double>
-                    recentData.putAll(sensorData.get(AppConstants.DATA_VARIANT_MINUTE) as LinkedHashMap<Double, Double>)
+
                     val entrySets = ArrayList<Entry>()
-                    recentData.forEach { (doubleKey, doubleValue) ->
+                    var filteredData: LinkedHashMap<Double, Double> = LinkedHashMap()
+                    when (selectedConfig) {
+                        SelectedConfig.ALL -> {
+                            filteredData =
+                                sensorData.get(AppConstants.DATA_VARIANT_RECENT) as LinkedHashMap<Double, Double>
+
+                            filteredData.putAll(sensorData.get(AppConstants.DATA_VARIANT_MINUTE) as LinkedHashMap<Double, Double>)
+                        }
+
+                        SelectedConfig.RECENT -> {
+                            filteredData =
+                                sensorData.get(AppConstants.DATA_VARIANT_RECENT) as LinkedHashMap<Double, Double>
+                        }
+
+                        SelectedConfig.MINUTE -> {
+                            filteredData =
+                                sensorData.get(AppConstants.DATA_VARIANT_MINUTE) as LinkedHashMap<Double, Double>
+                        }
+                    }
+
+                    filteredData.forEach { (doubleKey, doubleValue) ->
                         entrySets.add(Entry(doubleKey.toFloat(), doubleValue.toFloat()))
                     }
                     val lineData = generateLineDataSet(
@@ -166,6 +182,13 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
             rawHashEntries.let {
                 it.remove(sensorName)
             }
+            convertHashToLineDataSet()
+        }
+    }
+
+    fun onConfigUpdated(config: SelectedConfig) {
+        viewModelScope.launch {
+            selectedConfig = config
             convertHashToLineDataSet()
         }
     }

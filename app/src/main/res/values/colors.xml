@@ -9,4 +9,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lighter_gray">#ddd</color>
     <color name="red">#C54B4B</color>
+    <color name="pink">#FBC2C2</color>
+    <color name="dark_pink">#FA7171</color>
+    <color name="transparent">#919191</color>
+    <color name="sky_blue">#9CB9FF</color>
+    <color name="dark_blue">#345093</color>
 </resources>

@@ -15,10 +15,59 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <RadioGroup
+        android:id="@+id/rg_toggle"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/selector_out_line"
+        android:checkedButton="@+id/offer"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_close">
+
+        <RadioButton
+            android:id="@+id/rb_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_toggle_widget"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/all_hint"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/rb_recent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_toggle_widget"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/recent_hint"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/rb_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_toggle_widget"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/minute_hint"
+            android:textColor="@color/white" />
+    </RadioGroup>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_filter_options"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,10 +78,10 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_container"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_close"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/iv_close">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,8 +115,7 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <include
-        layout="@layout/layout_error"/>
+    <include layout="@layout/layout_error" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dineshworkspace.sensorapp.R
 import com.dineshworkspace.sensorapp.dataModels.BaseResponse
+import com.dineshworkspace.sensorapp.dataModels.SelectedConfig
 import com.dineshworkspace.sensorapp.dataModels.Sensor
 import com.dineshworkspace.sensorapp.dataModels.Status
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
@@ -40,6 +41,22 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
 
         iv_close.setOnClickListener {
             dismiss()
+        }
+
+        rg_toggle.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_all -> sensorViewModel.onConfigUpdated(SelectedConfig.ALL)
+                R.id.rb_minute -> sensorViewModel.onConfigUpdated(SelectedConfig.MINUTE)
+                R.id.rb_recent -> sensorViewModel.onConfigUpdated(SelectedConfig.RECENT)
+            }
+        }
+
+        sensorViewModel.selectedConfig.let {
+            when (it) {
+                SelectedConfig.ALL -> rg_toggle.check(R.id.rb_all)
+                SelectedConfig.MINUTE -> rg_toggle.check(R.id.rb_minute)
+                SelectedConfig.RECENT -> rg_toggle.check(R.id.rb_recent)
+            }
         }
     }
 
