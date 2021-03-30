@@ -2,11 +2,12 @@ package com.dineshworkspace.sensorapp.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.dineshworkspace.sensorapp.helpers.AppConstants
 import com.dineshworkspace.sensorapp.R
 import com.dineshworkspace.sensorapp.dataModels.Sensor
 import com.dineshworkspace.sensorapp.dataModels.SocketResponse
 import com.dineshworkspace.sensorapp.dataModels.SubscriptionStatus
+import com.dineshworkspace.sensorapp.dataModels.XAxisTimeFormatter
+import com.dineshworkspace.sensorapp.helpers.AppConstants
 import com.dineshworkspace.sensorapp.viewModels.SensorViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.LineData
@@ -74,6 +75,7 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         // enable scaling and dragging
         chart_sensor_data.setDragEnabled(true)
         chart_sensor_data.setScaleEnabled(true)
+        chart_sensor_data.xAxis.setValueFormatter(XAxisTimeFormatter())
 
         val l: Legend = chart_sensor_data.getLegend()
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
@@ -106,7 +108,7 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     }
 
     private fun updateUiForSocketResponse(socketResponse: SocketResponse?) {
-        socketResponse.let { response ->
+        socketResponse?.let { response ->
             when (response?.type) {
                 AppConstants.RES_TYPE_INIT -> sensorViewModel.onInitDataReceived(
                     response,
