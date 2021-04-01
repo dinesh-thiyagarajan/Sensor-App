@@ -22,6 +22,7 @@ import javax.inject.Inject
 class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
 
     private val sensorViewModel: SensorViewModel by viewModels()
+    private val filterBottomSheetFragment = FilterBottomSheetFragment()
 
     @Inject
     lateinit var gson: Gson
@@ -54,7 +55,6 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
         })
 
         iv_filter.setOnClickListener {
-            iv_filter.isClickable = false
             showBottomSheetDialog()
         }
     }
@@ -122,9 +122,12 @@ class DashboardActivity : BaseActivity(layoutId = R.layout.activity_dashboard) {
     }
 
     private fun showBottomSheetDialog() {
-        val filterBottomSheetFragment = FilterBottomSheetFragment()
-        filterBottomSheetFragment.show(supportFragmentManager, "")
-        iv_filter.isClickable = true
+        if (!filterBottomSheetFragment.isAdded) {
+            filterBottomSheetFragment.show(
+                supportFragmentManager,
+                FilterBottomSheetFragment::class.java.simpleName
+            )
+        }
     }
 
     override fun onDestroy() {
