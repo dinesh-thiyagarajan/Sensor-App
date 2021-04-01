@@ -73,6 +73,8 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
         shimmer_container.stopShimmer()
         rv_filter_options.visibility = View.VISIBLE
         filterOptionsAdapter.submitList(data)
+        rg_toggle.visibility = View.VISIBLE
+        cl_error_layout.visibility = View.GONE
     }
 
     private fun showErrorScreen(message: String?) {
@@ -81,6 +83,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
         shimmer_container.visibility = View.GONE
         shimmer_container.stopShimmer()
         rv_filter_options.visibility = View.GONE
+        rg_toggle.visibility = View.GONE
     }
 
     private fun showLoadingScreen() {
@@ -88,6 +91,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
         shimmer_container.startShimmer()
         rv_filter_options.visibility = View.GONE
         cl_error_layout.visibility = View.GONE
+        rg_toggle.visibility = View.GONE
     }
 
     private fun initAdapter() {
