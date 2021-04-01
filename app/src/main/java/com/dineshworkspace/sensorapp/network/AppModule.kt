@@ -48,8 +48,8 @@ class AppModule {
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)
-        httpClient.callTimeout(1, TimeUnit.MINUTES)
-        httpClient.connectTimeout(1, TimeUnit.MINUTES)
+        httpClient.callTimeout(5, TimeUnit.SECONDS)
+        httpClient.connectTimeout(5, TimeUnit.SECONDS)
         return httpClient.build()
     }
 
