@@ -120,7 +120,6 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
     }
 
     fun onInitDataReceived(response: SocketResponse, lastSubscribedSensor: String) {
-        rawHashEntries = LinkedHashMap()
         viewModelScope.launch {
             rawHashEntries.put(
                 lastSubscribedSensor,
@@ -145,7 +144,7 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
                     }
 
                     val entrySets = ArrayList<Entry>()
-                    var filteredData: LinkedHashMap<Double, Double> = LinkedHashMap()
+                    val filteredData: LinkedHashMap<Double, Double> = LinkedHashMap()
                     when (selectedConfig) {
                         SelectedConfig.ALL -> {
                             filteredData.putAll(sensorData.get(AppConstants.DATA_VARIANT_RECENT) as LinkedHashMap<Double, Double>)
