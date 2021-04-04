@@ -53,8 +53,7 @@ object SensorDataHelper {
 
     fun generateRandomColor(): Int {
         val rnd = Random.Default
-        val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-        return color
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
     }
 
 }

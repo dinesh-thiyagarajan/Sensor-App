@@ -27,8 +27,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.layout_filter_bottom_sheet, container, false)
-        return view
+        return inflater.inflate(R.layout.layout_filter_bottom_sheet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
