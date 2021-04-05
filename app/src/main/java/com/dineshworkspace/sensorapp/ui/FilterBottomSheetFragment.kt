@@ -44,7 +44,6 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
 
         rg_toggle.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.rb_all -> sensorViewModel.onConfigUpdated(SelectedConfig.ALL)
                 R.id.rb_minute -> sensorViewModel.onConfigUpdated(SelectedConfig.MINUTE)
                 R.id.rb_recent -> sensorViewModel.onConfigUpdated(SelectedConfig.RECENT)
             }
@@ -52,7 +51,6 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment(), SensorSelectedCal
 
         sensorViewModel.selectedConfig.let {
             when (it) {
-                SelectedConfig.ALL -> rg_toggle.check(R.id.rb_all)
                 SelectedConfig.MINUTE -> rg_toggle.check(R.id.rb_minute)
                 SelectedConfig.RECENT -> rg_toggle.check(R.id.rb_recent)
             }

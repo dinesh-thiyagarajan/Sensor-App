@@ -30,7 +30,7 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
     var dataSetList: MutableLiveData<ArrayList<ILineDataSet>> = MutableLiveData()
     var sensorColorHash: HashMap<String, Int> = HashMap()
     private val sensorList = ArrayList<Sensor>()
-    var selectedConfig: SelectedConfig = SelectedConfig.ALL
+    var selectedConfig: SelectedConfig = SelectedConfig.RECENT
 
     init {
         getSensors()
@@ -146,11 +146,6 @@ class SensorViewModel @Inject constructor(private val appRepository: AppReposito
                     val entrySets = ArrayList<Entry>()
                     val filteredData: LinkedHashMap<Double, Double> = LinkedHashMap()
                     when (selectedConfig) {
-                        SelectedConfig.ALL -> {
-                            filteredData.putAll(sensorData.get(AppConstants.DATA_VARIANT_RECENT) as LinkedHashMap<Double, Double>)
-                            filteredData.putAll(sensorData.get(AppConstants.DATA_VARIANT_MINUTE) as LinkedHashMap<Double, Double>)
-                        }
-
                         SelectedConfig.RECENT -> {
                             filteredData.putAll(sensorData.get(AppConstants.DATA_VARIANT_RECENT) as LinkedHashMap<Double, Double>)
                         }

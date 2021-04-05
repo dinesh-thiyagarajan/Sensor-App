@@ -16,7 +16,6 @@ enum class SubscriptionStatus {
 }
 
 enum class SelectedConfig {
-    ALL,
     MINUTE,
     RECENT
 }
